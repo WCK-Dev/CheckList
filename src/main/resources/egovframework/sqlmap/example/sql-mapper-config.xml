@@ -4,6 +4,11 @@
 <configuration>
     <typeAliases>
 		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
-		<!-- <typeAlias alias="searchVO" type="egovframework.example.checklist.service.CheckListDefaultVO"/> -->
+		<typeAlias alias="userVO" type="egovframework.example.checklist.service.UserVO"/>
+		<typeAlias alias="boardVO" type="egovframework.example.checklist.service.BoardVO"/>
+		<typeAlias alias="checkListVO" type="egovframework.example.checklist.service.CheckListVO"/>
+		<typeAlias alias="answerVO" type="egovframework.example.checklist.service.AnswerVO"/>
+		<typeAlias alias="logVO" type="egovframework.example.checklist.service.LogVO"/>
+		<typeAlias alias="showListVO" type="egovframework.example.checklist.service.ShowListVO"/>
     </typeAliases>
 </configuration>

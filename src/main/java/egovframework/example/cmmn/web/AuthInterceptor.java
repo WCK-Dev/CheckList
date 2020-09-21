@@ -19,7 +19,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 		
 		Object obj = session.getAttribute("user");
 		
-		if(obj == null || ((UserVO)obj).getUser_id().equals("")) { 
+		if(obj == null || ((UserVO)obj).getU_id().equals("")) { 
 			response.sendRedirect("/checkList/login.do");
 			return false;
 		}

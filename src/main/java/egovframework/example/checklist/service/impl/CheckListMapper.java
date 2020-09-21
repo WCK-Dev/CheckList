@@ -15,10 +15,28 @@
  */
 package egovframework.example.checklist.service.impl;
 
+import java.util.List;
+
+import egovframework.example.checklist.service.BoardVO;
+import egovframework.example.checklist.service.CheckListVO;
+import egovframework.example.checklist.service.ShowListVO;
+import egovframework.example.checklist.service.UserVO;
 import egovframework.rte.psl.dataaccess.mapper.Mapper;
 
 @Mapper("checkListMapper")
 public interface CheckListMapper {
 	
+	UserVO login(UserVO vo);
 	
+	List<UserVO> selectUserList();
+	
+	int insertBoard(BoardVO vo);
+	
+	int insertCheckList(CheckListVO vo);
+	
+	int insertShowList(ShowListVO vo);
+	
+	List<BoardVO> selectBoardListAll();
+	
+	List<BoardVO> selectBoardTopListAll();
 }

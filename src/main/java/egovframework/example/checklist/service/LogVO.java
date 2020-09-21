@@ -1,21 +1,36 @@
 package egovframework.example.checklist.service;
 
+import java.sql.Timestamp;
+
 public class LogVO {
 	
-	private int b_no;
-	private String user_id;
+	private int l_seq;
+	private String l_readdate;
+	private String u_id;
+	private Timestamp b_seq;
 	
-	public int getB_no() {
-		return b_no;
+	public int getL_seq() {
+		return l_seq;
 	}
-	public void setB_no(int b_no) {
-		this.b_no = b_no;
+	public void setL_seq(int l_seq) {
+		this.l_seq = l_seq;
 	}
-	public String getUser_id() {
-		return user_id;
+	public String getL_readdate() {
+		return l_readdate;
 	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setL_readdate(String l_readdate) {
+		this.l_readdate = l_readdate;
 	}
-	
+	public String getU_id() {
+		return u_id;
+	}
+	public void setU_id(String u_id) {
+		this.u_id = u_id;
+	}
+	public Timestamp getB_seq() {
+		return b_seq;
+	}
+	public void setB_seq(Timestamp b_seq) {
+		this.b_seq = b_seq;
+	}
 }

@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="egovframework.example.checklist.service.impl.CheckMapper">
-
+<mapper namespace="egovframework.example.checklist.service.impl.CheckListMapper">
 	
+	<select id="login" resultType="userVO">
+		SELECT u_id, u_name, u_roll
+		FROM user
+		WHERE u_id = #{u_id }
+			AND u_pwd = #{u_pwd }
+	</select>
+	
+	<select id="selectUserList" resultType="userVO">
+		SELECT u_id, u_name, u_roll
+		FROM user
+		WHERE u_roll != 'admin'
+	</select>
+	
+	<insert id="insertBoard" useGeneratedKeys="true" keyProperty="b_seq">
+		INSERT INTO 
+			board(
+				  b_title
+				 ,b_comment
+				 ,b_writer
+				 ,b_topYN
+				 )
+		VALUES(
+			   #{b_title}
+			  ,#{b_comment}
+			  ,#{b_writer}
+			  ,#{b_topYN}
+			  )
+	</insert>
+	
+	<insert id="insertCheckList">
+		INSERT INTO
+			checklist(
+					  c_name
+					 ,b_seq
+					 )
+		VALUES(
+			   #{c_name}
+			  ,#{b_seq}
+			  )
+	</insert>
+	
+	<insert id="insertShowList">
+		INSERT INTO
+			showlist(
+				 u_id
+				,b_seq
+				 )
+		VALUES(
+			   #{u_id}
+			  ,#{b_seq}
+			  )
+	</insert>
+	
+	
+	<select id="selectBoardListAll" resultType="boardVO">
+		SELECT 
+	</select>
+	
+	<select id="selectBoardTopListAll" resultType="boardVO">
+	</select>
 </mapper>

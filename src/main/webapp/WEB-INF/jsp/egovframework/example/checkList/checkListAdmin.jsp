@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>게시판 메인</title>
+<title>관리자 페이지</title>
 <%@include file="../cmmn/common_top.jsp"%>
 
 </head>
@@ -20,7 +20,7 @@
 			<button class="btn btn-danger" type="button" onclick="location.href='logout.do'">로그아웃</button>
 		</div>
 		
-		<h2 style="margin-top: 60px; display: inline-block;">체크리스트 게시판</h2>
+		<h2 style="margin-top: 60px; display: inline-block;">체크리스트 관리페이지</h2>
 
 		<hr>
 		<!-- table -->
@@ -46,6 +46,10 @@
 		</table>
 		
 		<!-- Paging -->
+		
+		<div class="text-right">
+			<button type="button" class="btn btn-dark" onclick="location.href='writeBoard.do'">새 체크리스트 작성</button>
+		</div>
 	</div>
 </body>
 </html>
