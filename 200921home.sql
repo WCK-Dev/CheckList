@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.20, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.18, for Win64 (x86_64)
 --
 -- Host: localhost    Database: checklist
 -- ------------------------------------------------------
--- Server version	8.0.20
+-- Server version	8.0.18
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,7 +27,7 @@ CREATE TABLE `answer` (
   `a_regdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `a_modifier` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `u_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `c_seq` int NOT NULL,
+  `c_seq` int(11) NOT NULL,
   PRIMARY KEY (`u_id`,`c_seq`),
   KEY `FK_cseq` (`c_seq`),
   CONSTRAINT `FK_cseq` FOREIGN KEY (`c_seq`) REFERENCES `checklist` (`c_seq`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -52,7 +52,7 @@ DROP TABLE IF EXISTS `board`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `board` (
-  `b_seq` int NOT NULL AUTO_INCREMENT,
+  `b_seq` int(11) NOT NULL AUTO_INCREMENT,
   `b_title` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `b_comment` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `b_regdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -63,7 +63,7 @@ CREATE TABLE `board` (
   PRIMARY KEY (`b_seq`),
   KEY `FK_b_writer` (`b_writer`),
   CONSTRAINT `FK_b_writer` FOREIGN KEY (`b_writer`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='각 체크리스트 글 테이블';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='각 체크리스트 글 테이블';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +72,7 @@ CREATE TABLE `board` (
 
 LOCK TABLES `board` WRITE;
 /*!40000 ALTER TABLE `board` DISABLE KEYS */;
-INSERT INTO `board` VALUES (14,'새 체크리스트 작성','해당 유저들은 오늘안에 체크리스트 작성 부탁합니다.','2020-09-21 08:53:06','admin','Y',NULL,NULL);
+INSERT INTO `board` VALUES (14,'새 체크리스트 작성','해당 유저들은 오늘안에 체크리스트 작성 부탁합니다.','2020-09-21 08:53:06','admin','Y',NULL,NULL),(17,'상단 비노출 체크리스트','체크항목에 모두 답변해주세요','2020-09-21 13:56:32','admin','N',NULL,NULL);
 /*!40000 ALTER TABLE `board` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,13 +84,13 @@ DROP TABLE IF EXISTS `checklist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `checklist` (
-  `c_seq` int NOT NULL AUTO_INCREMENT,
+  `c_seq` int(11) NOT NULL AUTO_INCREMENT,
   `c_name` varchar(100) NOT NULL,
-  `b_seq` int NOT NULL,
+  `b_seq` int(11) NOT NULL,
   PRIMARY KEY (`c_seq`),
   KEY `FK_b_seq` (`b_seq`),
   CONSTRAINT `FK_b_seq` FOREIGN KEY (`b_seq`) REFERENCES `board` (`b_seq`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='각 작성글별 체크리스트 테이블';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='각 작성글별 체크리스트 테이블';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +99,7 @@ CREATE TABLE `checklist` (
 
 LOCK TABLES `checklist` WRITE;
 /*!40000 ALTER TABLE `checklist` DISABLE KEYS */;
-INSERT INTO `checklist` VALUES (11,'체크리스트1',14),(12,'체크리스트2',14),(13,'체크리스트3',14);
+INSERT INTO `checklist` VALUES (11,'체크리스트1',14),(12,'체크리스트2',14),(13,'체크리스트3',14),(14,'체크항목 3',17),(15,'체크항목 4',17);
 /*!40000 ALTER TABLE `checklist` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,10 +111,10 @@ DROP TABLE IF EXISTS `log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `log` (
-  `l_seq` int NOT NULL AUTO_INCREMENT,
+  `l_seq` int(11) NOT NULL AUTO_INCREMENT,
   `l_readdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `u_id` varchar(100) NOT NULL,
-  `b_seq` int NOT NULL,
+  `b_seq` int(11) NOT NULL,
   PRIMARY KEY (`l_seq`),
   KEY `FK_u_id` (`u_id`),
   KEY `FK_log_bseq` (`b_seq`),
@@ -141,7 +141,7 @@ DROP TABLE IF EXISTS `showlist`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `showlist` (
   `u_id` varchar(100) NOT NULL,
-  `b_seq` int NOT NULL,
+  `b_seq` int(11) NOT NULL,
   PRIMARY KEY (`u_id`,`b_seq`),
   KEY `FK_show_bseq` (`b_seq`),
   CONSTRAINT `FK_show_bseq` FOREIGN KEY (`b_seq`) REFERENCES `board` (`b_seq`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -155,7 +155,7 @@ CREATE TABLE `showlist` (
 
 LOCK TABLES `showlist` WRITE;
 /*!40000 ALTER TABLE `showlist` DISABLE KEYS */;
-INSERT INTO `showlist` VALUES ('user2',14),('user3',14),('user5',14),('wck',14);
+INSERT INTO `showlist` VALUES ('user2',14),('user3',14),('user5',14),('wck',14),('user3',17),('user4',17),('wck',17);
 /*!40000 ALTER TABLE `showlist` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,4 +194,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-21 18:35:55
+-- Dump completed on 2020-09-21 22:57:37

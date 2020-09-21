@@ -57,9 +57,13 @@
 	
 	
 	<select id="selectBoardListAll" resultType="boardVO">
-		SELECT 
+		SELECT *
+		FROM board
 	</select>
 	
 	<select id="selectBoardTopListAll" resultType="boardVO">
+		SELECT *
+		FROM board
+		WHERE b_topYN = 'Y'
 	</select>
 </mapper>
