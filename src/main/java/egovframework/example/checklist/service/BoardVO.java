@@ -13,6 +13,8 @@ public class BoardVO {
 	private String b_modifier;
 	private Timestamp b_modifydate;
 	
+	private String c_name;
+	
 	public int getB_seq() {
 		return b_seq;
 	}
@@ -61,4 +63,12 @@ public class BoardVO {
 	public void setB_modifydate(Timestamp b_modifydate) {
 		this.b_modifydate = b_modifydate;
 	}
+	
+	public String getC_name() {
+		return c_name;
+	}
+	public void setC_name(String c_name) {
+		this.c_name = c_name;
+	}
+	
 }

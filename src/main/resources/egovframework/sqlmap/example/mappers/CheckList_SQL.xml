@@ -66,4 +66,106 @@
 		FROM board
 		WHERE b_topYN = 'Y'
 	</select>
+	
+	<select id="selectBoardList" resultType="boardVO">
+		SELECT b.b_seq, b_title, b_comment, b_regdate, b_writer, b_topYN, b_modifier, b_modifydate
+		FROM board b, showlist s 
+		WHERE b.b_seq = s.b_seq AND s.u_id = #{u_id};
+	</select>
+	
+	<select id="selectBoardTopList" resultType="boardVO">
+		SELECT b.b_seq, b_title, b_comment, b_regdate, b_writer, b_topYN, b_modifier, b_modifydate
+		FROM board b, showlist s 
+		WHERE b.b_seq = s.b_seq AND s.u_id = #{u_id} AND b_topYN = 'Y';
+	</select>
+	
+	<select id="selectBoard" resultType="boardVO">
+		SELECT b_seq, b_title, b_comment, b_regdate, b_writer, b_modifier, b_modifydate
+		FROM board
+		WHERE b_seq = #{b_seq}
+	</select>
+	
+	<select id="selectCheckList" resultType="checkListVO">
+		SELECT c_seq, c_name
+		FROM checklist
+		WHERE b_seq = #{b_seq}
+	</select>
+	
+	<select id="selectShowList" resultType="showListVO">
+		SELECT u_id
+		FROM showlist
+		WHERE b_seq = #{b_seq}
+	</select>
+	
+	<select id="selectAnswerList" resultType="answerVO">
+		SELECT a_checked, a_regdate, a_modifier, a_modifydate, u_id, c.c_seq
+		FROM answer a, checklist c
+		WHERE c.c_seq = a.c_seq AND c.b_seq = #{b_seq}
+	</select>
+	
+	<select id="selectAnswerOne" resultType="answerVO">
+		SELECT a_checked, a_regdate, u_id, c_seq
+		FROM answer
+		WHERE u_id = #{u_id}
+			AND c_seq = #{c_seq}
+	</select>
+	
+	<insert id="insertAnswer">
+		INSERT INTO 
+			answer(
+				   a_checked
+				  ,a_regdate
+				  ,u_id
+				  ,c_seq
+				  )
+			VALUES(
+				   #{a_checked}
+				  ,sysdate()
+				  ,#{u_id}
+				  ,#{c_seq}
+				  )
+	</insert>
+	
+	<update id="updateAnswer">
+		update answer
+			SET a_checked = #{a_checked}
+			   ,a_modifier = #{u_id}
+			   ,a_modifydate = sysdate()
+			WHERE u_id = #{answer_id}
+			AND c_seq = #{c_seq} 
+	</update>
+	
+	
+	<select id="selectLog" resultType="logVO">
+		SELECT *
+		FROM log
+		WHERE u_id = #{u_id}
+			AND b_seq = #{b_seq}
+	</select>
+	
+	<insert id="insertLog">
+		INSERT INTO 
+					log(
+						u_id
+					   ,b_seq
+					   ,l_readdate
+						)
+				VALUES(
+						#{u_id}
+					   ,#{b_seq}
+					   ,sysdate()
+					  )
+	</insert>
+	
+	<update id="updateLog">
+		UPDATE log
+			SET l_readdate = sysdate()
+			WHERE u_id = #{u_id} AND b_seq = #{b_seq} 
+	</update>
+	
+	<select id="selectLogList" resultType="logVO">
+		SELECT *
+		FROM log
+		WHERE b_seq = #{b_seq}
+	</select>
 </mapper>

@@ -7,8 +7,11 @@ public class AnswerVO {
 	private String a_checked;
 	private Timestamp a_regdate;
 	private String a_modifier;
+	private Timestamp a_modifydate;
 	private String u_id;
 	private int c_seq;
+	
+	private String answer_id;
 	
 	public String getA_checked() {
 		return a_checked;
@@ -28,6 +31,12 @@ public class AnswerVO {
 	public void setA_modifier(String a_modifier) {
 		this.a_modifier = a_modifier;
 	}
+	public Timestamp getA_modifydate() {
+		return a_modifydate;
+	}
+	public void setA_modifydate(Timestamp a_modifydate) {
+		this.a_modifydate = a_modifydate;
+	}
 	public String getU_id() {
 		return u_id;
 	}
@@ -40,4 +49,14 @@ public class AnswerVO {
 	public void setC_seq(int c_seq) {
 		this.c_seq = c_seq;
 	}
+	
+	
+	
+	public String getAnswer_id() {
+		return answer_id;
+	}
+	public void setAnswer_id(String answer_id) {
+		this.answer_id = answer_id;
+	}
+	
 }

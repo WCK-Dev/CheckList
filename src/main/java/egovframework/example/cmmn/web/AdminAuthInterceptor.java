@@ -8,22 +8,21 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import egovframework.example.checklist.service.UserVO;
 
-public class AuthInterceptor extends HandlerInterceptorAdapter{
+public class AdminAuthInterceptor extends HandlerInterceptorAdapter{
 
-	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		HttpSession session = request.getSession();
+HttpSession session = request.getSession();
 		
 		Object obj = session.getAttribute("user");
 		
-		if(obj == null || ((UserVO)obj).getU_id().equals("")) { 
-			response.sendRedirect("/CheckList/login.do");
+		if(obj == null || ((UserVO)obj).getU_id().equals("") ||  !((UserVO)obj).getU_roll().equals("admin")) { 
+			response.sendRedirect("/CheckList/checkListMain.do");
 			return false;
+			
 		}
-		return true; // 조건문에 걸리지않으면 (로그인 상태이면) 컨트롤러에 요청정보를 전송하게 됨
+		return true;
 	}
-	
 }

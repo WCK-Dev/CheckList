@@ -23,9 +23,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import egovframework.example.checklist.service.AnswerVO;
 import egovframework.example.checklist.service.BoardVO;
 import egovframework.example.checklist.service.CheckListService;
 import egovframework.example.checklist.service.CheckListVO;
+import egovframework.example.checklist.service.LogVO;
 import egovframework.example.checklist.service.ShowListVO;
 import egovframework.example.checklist.service.UserVO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -78,4 +80,68 @@ public class CheckListServiceImpl extends EgovAbstractServiceImpl implements Che
 		return checkListDAO.selectBoardTopListAll();
 	}
 	
+	@Override
+	public List<BoardVO> selectBoardList(UserVO vo) {
+		return checkListDAO.selectBoardList(vo);
+	}
+
+	@Override
+	public List<BoardVO> selectBoardTopList(UserVO vo) {
+		return checkListDAO.selectBoardTopList(vo);
+	}
+
+	@Override
+	public BoardVO selectBoard(BoardVO vo) {
+		return checkListDAO.selectBoard(vo);
+	}
+	
+	@Override
+	public LogVO selectLog(LogVO vo) {
+		return checkListDAO.selectLog(vo);
+	}
+	
+	@Override
+	public int insertLog(LogVO vo) {
+		return checkListDAO.insertLog(vo);
+	}
+	
+	@Override
+	public int updateLog(LogVO vo) {
+		return checkListDAO.updateLog(vo);
+	}
+
+	@Override
+	public List<CheckListVO> selectCheckList(BoardVO vo) {
+		return checkListDAO.selectCheckList(vo);
+	}
+
+	@Override
+	public List<ShowListVO> selectShowList(BoardVO vo) {
+		return checkListDAO.selectShowList(vo);
+	}
+	
+	@Override
+	public List<AnswerVO> selectAnswerList(BoardVO vo) {
+		return checkListDAO.selectAnswerList(vo);
+	}
+	
+	@Override
+	public AnswerVO selectAnswerOne(AnswerVO vo) {
+		return checkListDAO.selectAnswerOne(vo);
+	}
+	
+	@Override
+	public int insertAnswer(AnswerVO vo) {
+		return checkListDAO.insertAnswer(vo);
+	}
+	
+	@Override
+	public int updateAnswer(AnswerVO vo) {
+		return checkListDAO.updateAnswer(vo);
+	}
+
+	@Override
+	public List<LogVO> selectLogList(BoardVO vo) {
+		return checkListDAO.selectLogList(vo);
+	}
 }

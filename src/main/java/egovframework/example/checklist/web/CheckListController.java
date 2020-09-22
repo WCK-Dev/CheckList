@@ -1,17 +1,24 @@
 package egovframework.example.checklist.web;
 
+import java.util.HashMap;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import egovframework.example.checklist.service.AnswerVO;
 import egovframework.example.checklist.service.BoardVO;
 import egovframework.example.checklist.service.CheckListService;
 import egovframework.example.checklist.service.CheckListVO;
+import egovframework.example.checklist.service.LogVO;
 import egovframework.example.checklist.service.ShowListVO;
 import egovframework.example.checklist.service.UserVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
@@ -62,7 +69,12 @@ public class CheckListController {
 	
 	
 	@RequestMapping(value="checkListMain.do")
-	public String checkListMain() {
+	public String checkListMain(HttpSession session, ModelMap model) {
+		UserVO uvo = (UserVO)session.getAttribute("user");
+		
+		model.addAttribute("boardList", checkListService.selectBoardList(uvo));
+		model.addAttribute("boardTopList", checkListService.selectBoardTopList(uvo));
+		
 		return "checkList/checkListMain";
 	}
 	
@@ -112,4 +124,89 @@ public class CheckListController {
 		return "redirect:/checkListAdmin.do";
 	}
 	
+	@RequestMapping(value="readBoard.do", method=RequestMethod.POST)
+	@ResponseBody
+	public HashMap<String, Object> readBoard(BoardVO bvo) {
+		
+		HashMap<String, Object> boardMap = new HashMap<>();
+		boardMap.put("bvo", checkListService.selectBoard(bvo));
+		boardMap.put("cvoList", checkListService.selectCheckList(bvo));
+		boardMap.put("svoList", checkListService.selectShowList(bvo));
+		
+		return boardMap;
+	}
+	
+	@RequestMapping(value="readCheckList.do", method=RequestMethod.POST)
+	@ResponseBody
+	public HashMap<String, Object> readCheckList(BoardVO bvo, HttpSession session) {
+		
+		HashMap<String, Object> boardMap = new HashMap<>();
+		boardMap.put("bvo", checkListService.selectBoard(bvo));
+		boardMap.put("cvoList", checkListService.selectCheckList(bvo));
+		boardMap.put("avoList", checkListService.selectAnswerList(bvo));
+		
+		//체크리스트 조회로그 입력
+		//기존에 읽은적이 있는 로그인지 확인
+		String u_id = ((UserVO)session.getAttribute("user")).getU_id();
+		LogVO lvo = new LogVO();
+		lvo.setB_seq(bvo.getB_seq());
+		lvo.setU_id(u_id);
+		
+		LogVO exsitingLog = checkListService.selectLog(lvo);
+		
+		if(exsitingLog == null) { //로그 기록이 없으면 로그 입력
+			checkListService.insertLog(lvo);
+		} else { //있으면 로그 업데이트(최종 조회시간 갱신)
+			checkListService.updateLog(lvo);
+		}
+		
+		return boardMap;
+	}
+	
+	@RequestMapping(value="saveAnswer.do", method=RequestMethod.POST)
+	@ResponseBody
+	public String saveAnswer(@RequestBody AnswerVO[] send_Json, HttpSession session) {
+		
+		int result = 0;
+		
+		boolean isUpdate = false;
+		
+		String u_id = (String)((UserVO)session.getAttribute("user")).getU_id();
+		
+		for(AnswerVO avo : send_Json) {
+			
+			avo.setU_id(u_id);
+			
+			AnswerVO existingAVO = checkListService.selectAnswerOne(avo);
+			
+			isUpdate = existingAVO == null ? false : true;
+			
+			if(!isUpdate) {
+				result += checkListService.insertAnswer(avo);
+			} else {
+				avo.setAnswer_id(existingAVO.getU_id());
+				result += checkListService.updateAnswer(avo);
+			}
+			
+		}
+		
+		return result + "";
+	}
+	
+	@RequestMapping(value="selectUserLog.do")
+	public String selectUserLog(BoardVO bvo, ModelMap model, RedirectAttributes ra) {
+		
+		bvo = checkListService.selectBoard(bvo);
+		
+		if(bvo == null) { 
+			ra.addFlashAttribute("logErrorMsg", "true");
+			return "redirect:/checkListAdmin.do";
+			
+		} else {
+			model.addAttribute("boardInfo", bvo);
+			model.addAttribute("svoList", checkListService.selectShowList(bvo));
+			model.addAttribute("lvoList", checkListService.selectLogList(bvo));
+			return "checkList/selectUserLog";
+		}
+	}
 }
