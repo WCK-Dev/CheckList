@@ -31,6 +31,21 @@
 			  )
 	</insert>
 	
+	<update id="updateBoard">
+		UPDATE board
+			SET b_title = #{b_title}
+			   ,b_comment = #{b_comment}
+			   ,b_topYN = #{b_topYN}
+			   ,b_modifier = #{b_modifier}
+			   ,b_modifydate = sysdate()
+		WHERE b_seq = #{b_seq}
+	</update>
+	
+	<delete id="deleteBoard">
+		DELETE FROM board
+		WHERE b_seq = #{b_seq}
+	</delete>
+	
 	<insert id="insertCheckList">
 		INSERT INTO
 			checklist(
@@ -42,6 +57,11 @@
 			  ,#{b_seq}
 			  )
 	</insert>
+	
+	<delete id="deleteCheckList">
+		DELETE FROM checklist
+		WHERE c_seq = #{c_seq}
+	</delete>
 	
 	<insert id="insertShowList">
 		INSERT INTO
@@ -55,9 +75,20 @@
 			  )
 	</insert>
 	
+	<insert id="deleteShowList">
+		DELETE FROM showlist
+		WHERE b_seq = #{b_seq}
+	</insert>
+	
 	
 	<select id="selectBoardListAll" resultType="boardVO">
 		SELECT *
+		FROM board
+		LIMIT #{firstIndex}, #{recordCountPerPage}
+	</select>
+	
+	<select id="selectBoardListAllTotCnt" resultType="int">
+		SELECT COUNT(*)
 		FROM board
 	</select>
 	
@@ -70,17 +101,24 @@
 	<select id="selectBoardList" resultType="boardVO">
 		SELECT b.b_seq, b_title, b_comment, b_regdate, b_writer, b_topYN, b_modifier, b_modifydate
 		FROM board b, showlist s 
-		WHERE b.b_seq = s.b_seq AND s.u_id = #{u_id};
+		WHERE b.b_seq = s.b_seq AND s.u_id = #{u_id}
+		LIMIT #{firstIndex}, #{recordCountPerPage}
+	</select>
+	
+	<select id="selectBoardListTotCnt" resultType="int">
+		SELECT COUNT(*)
+		FROM board b, showlist s 
+		WHERE b.b_seq = s.b_seq AND s.u_id = #{u_id}
 	</select>
 	
 	<select id="selectBoardTopList" resultType="boardVO">
 		SELECT b.b_seq, b_title, b_comment, b_regdate, b_writer, b_topYN, b_modifier, b_modifydate
 		FROM board b, showlist s 
-		WHERE b.b_seq = s.b_seq AND s.u_id = #{u_id} AND b_topYN = 'Y';
+		WHERE b.b_seq = s.b_seq AND s.u_id = #{u_id} AND b_topYN = 'Y'
 	</select>
 	
 	<select id="selectBoard" resultType="boardVO">
-		SELECT b_seq, b_title, b_comment, b_regdate, b_writer, b_modifier, b_modifydate
+		SELECT *
 		FROM board
 		WHERE b_seq = #{b_seq}
 	</select>
@@ -100,7 +138,7 @@
 	<select id="selectAnswerList" resultType="answerVO">
 		SELECT a_checked, a_regdate, a_modifier, a_modifydate, u_id, c.c_seq
 		FROM answer a, checklist c
-		WHERE c.c_seq = a.c_seq AND c.b_seq = #{b_seq}
+		WHERE c.c_seq = a.c_seq AND c.b_seq = #{b_seq} AND a.u_id = #{u_id}
 	</select>
 	
 	<select id="selectAnswerOne" resultType="answerVO">
@@ -167,5 +205,12 @@
 		SELECT *
 		FROM log
 		WHERE b_seq = #{b_seq}
+	</select>
+	
+	<select id="selectUserAnswerList" resultType="answerVO">
+		SELECT u_id, a_regdate, a_modifier, a_modifydate
+		FROM answer a, checklist c
+		WHERE c.c_seq = a.c_seq AND c.b_seq = #{b_seq}
+		GROUP BY u_id
 	</select>
 </mapper>

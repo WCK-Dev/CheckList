@@ -22,6 +22,7 @@ import egovframework.example.checklist.service.LogVO;
 import egovframework.example.checklist.service.ShowListVO;
 import egovframework.example.checklist.service.UserVO;
 import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
 public class CheckListController {
@@ -69,19 +70,51 @@ public class CheckListController {
 	
 	
 	@RequestMapping(value="checkListMain.do")
-	public String checkListMain(HttpSession session, ModelMap model) {
-		UserVO uvo = (UserVO)session.getAttribute("user");
+	public String checkListMain(HttpSession session, ModelMap model, BoardVO bvo) {
 		
-		model.addAttribute("boardList", checkListService.selectBoardList(uvo));
-		model.addAttribute("boardTopList", checkListService.selectBoardTopList(uvo));
+		String u_id = ((UserVO)session.getAttribute("user")).getU_id();
+		bvo.setU_id(u_id);
+		
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(bvo.getPageIndex());
+		paginationInfo.setRecordCountPerPage(bvo.getPageUnit());
+		paginationInfo.setPageSize(bvo.getPageSize());
+		
+		bvo.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		bvo.setLastIndex(paginationInfo.getLastRecordIndex());
+		bvo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		
+		int totCnt = checkListService.selectBoardListTotCnt(bvo);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+		
+		////
+		
+		model.addAttribute("boardList", checkListService.selectBoardList(bvo));
+		model.addAttribute("boardTopList", checkListService.selectBoardTopList(bvo));
+		
 		
 		return "checkList/checkListMain";
 	}
 	
 	@RequestMapping(value="checkListAdmin.do")
-	public String checkListAdmin(ModelMap model) {
+	public String checkListAdmin(ModelMap model, BoardVO bvo) {
+		/** pageing setting */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(bvo.getPageIndex());
+		paginationInfo.setRecordCountPerPage(bvo.getPageUnit());
+		paginationInfo.setPageSize(bvo.getPageSize());
 		
-		model.addAttribute("boardListAll", checkListService.selectBoardListAll());
+		bvo.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		bvo.setLastIndex(paginationInfo.getLastRecordIndex());
+		bvo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		
+		int totCnt = checkListService.selectBoardListAllTotCnt(bvo);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+		
+		model.addAttribute("boardListAll", checkListService.selectBoardListAll(bvo));
 		model.addAttribute("boardTopListAll", checkListService.selectBoardTopListAll());
 		
 		return "checkList/checkListAdmin";
@@ -112,16 +145,82 @@ public class CheckListController {
 		}
 		
 		//해당 글의 보여줄 유저값을 db입력
-		String[] showU_id = request.getParameterValues("showU_id");
-		ShowListVO svo = new ShowListVO();
-		svo.setB_seq(b_seq);
-		
-		for(String u_id : showU_id) {
-			svo.setU_id(u_id);
-			checkListService.insertShowList(svo);
+		if(request.getParameterValues("showU_id") != null) { // 보여줄 유저목록에 체크된 값이 있을때만 수행
+			String[] showU_id = request.getParameterValues("showU_id");
+			ShowListVO svo = new ShowListVO();
+			svo.setB_seq(b_seq);
+			
+			for(String u_id : showU_id) {
+				svo.setU_id(u_id);
+				checkListService.insertShowList(svo);
+			}
 		}
 		
 		return "redirect:/checkListAdmin.do";
+	}
+	
+	@RequestMapping(value="modifyBoard.do", method=RequestMethod.GET)
+	public String modifyBoard(BoardVO bvo, ModelMap model) {
+		
+		model.addAttribute("board", checkListService.selectBoard(bvo));
+		model.addAttribute("checkList", checkListService.selectCheckList(bvo));
+		model.addAttribute("userList", checkListService.selectUserList());
+		model.addAttribute("showList", checkListService.selectShowList(bvo));
+		
+		return "checkList/modifyBoard"; 
+	}
+	
+	@RequestMapping(value="modifyBoard.do", method=RequestMethod.POST)
+	public String modifyBoard(BoardVO bvo, String delCheckList, String newCheckList, HttpServletRequest request) {
+		
+		checkListService.updateBoard(bvo);
+		
+		//해당 게시글의 체크리스트 설정
+		int b_seq = bvo.getB_seq();
+		CheckListVO cvo = new CheckListVO();
+		cvo.setB_seq(b_seq);
+		
+		//제거된 기존 체크리스트 항목 삭제
+		String[] delList = delCheckList.split(",");
+		
+		for(String delChk : delList) {
+			if(!delChk.equals("")) {
+				cvo.setC_seq(Integer.parseInt(delChk));
+				checkListService.deleteCheckList(cvo);
+			}
+		}
+		
+		//새롭게 추가된 체크리스트 항목 추가
+		String[] newChkList = newCheckList.split(",");
+		for(String newChk : newChkList) {
+			if(!newChk.equals("")) {
+				cvo.setC_name(newChk);
+				checkListService.insertCheckList(cvo);
+			}
+		}
+		
+		//기존에 설정 되어있던 조회가능 유저 리스트 삭제후 재입력
+		ShowListVO svo = new ShowListVO();
+		svo.setB_seq(b_seq);
+		
+		checkListService.deleteShowList(svo); //기존 설정된 조회유저 리스트 삭제
+		
+		if(request.getParameterValues("showU_id") != null) { //새롭게 설정된 조회유저리스트 입력
+			String[] showU_id = request.getParameterValues("showU_id");
+			
+			for(String u_id : showU_id) {
+				svo.setU_id(u_id);
+				checkListService.insertShowList(svo);
+			}
+		}
+		
+		return "redirect:/checkListAdmin.do"; 
+	}
+	
+	@RequestMapping(value="deleteBoard.do", method=RequestMethod.POST)
+	@ResponseBody
+	public String deleteBoard(BoardVO bvo) {
+		return checkListService.deleteBoard(bvo) + "";
 	}
 	
 	@RequestMapping(value="readBoard.do", method=RequestMethod.POST)
@@ -139,6 +238,8 @@ public class CheckListController {
 	@RequestMapping(value="readCheckList.do", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String, Object> readCheckList(BoardVO bvo, HttpSession session) {
+		String u_id = ((UserVO)session.getAttribute("user")).getU_id();
+		bvo.setU_id(u_id);
 		
 		HashMap<String, Object> boardMap = new HashMap<>();
 		boardMap.put("bvo", checkListService.selectBoard(bvo));
@@ -147,7 +248,6 @@ public class CheckListController {
 		
 		//체크리스트 조회로그 입력
 		//기존에 읽은적이 있는 로그인지 확인
-		String u_id = ((UserVO)session.getAttribute("user")).getU_id();
 		LogVO lvo = new LogVO();
 		lvo.setB_seq(bvo.getB_seq());
 		lvo.setU_id(u_id);
@@ -171,7 +271,7 @@ public class CheckListController {
 		
 		boolean isUpdate = false;
 		
-		String u_id = (String)((UserVO)session.getAttribute("user")).getU_id();
+		String u_id = ((UserVO)session.getAttribute("user")).getU_id();
 		
 		for(AnswerVO avo : send_Json) {
 			
@@ -199,7 +299,7 @@ public class CheckListController {
 		bvo = checkListService.selectBoard(bvo);
 		
 		if(bvo == null) { 
-			ra.addFlashAttribute("logErrorMsg", "true");
+			ra.addFlashAttribute("bSeqErrorMsg", "true");
 			return "redirect:/checkListAdmin.do";
 			
 		} else {
@@ -209,4 +309,31 @@ public class CheckListController {
 			return "checkList/selectUserLog";
 		}
 	}
+	
+	@RequestMapping(value="selectUserAnswer.do")
+	public String selectAnswerList(BoardVO bvo, ModelMap model, RedirectAttributes ra) {
+		
+		bvo = checkListService.selectBoard(bvo);
+		
+		if(bvo == null) { 
+			ra.addFlashAttribute("bSeqErrorMsg", "true");
+			return "redirect:/checkListAdmin.do";
+			
+		} else {
+			model.addAttribute("boardInfo", checkListService.selectBoard(bvo));
+			model.addAttribute("userAnswerList", checkListService.selectUserAnswerList(bvo));
+			return "checkList/selectUserAnswer";
+		}
+	}
+	
+	@RequestMapping(value="readUserAnswer.do", method=RequestMethod.POST)
+	@ResponseBody
+	public HashMap<String, Object> readUserAnswer(BoardVO bvo) {
+		HashMap<String, Object> answerMap = new HashMap<>();
+		answerMap.put("cvoList", checkListService.selectCheckList(bvo));
+		answerMap.put("avoList", checkListService.selectAnswerList(bvo));
+		
+		return answerMap; 
+	}
+	
 }

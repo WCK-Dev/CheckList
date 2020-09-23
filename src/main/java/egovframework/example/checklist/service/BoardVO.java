@@ -2,8 +2,10 @@ package egovframework.example.checklist.service;
 
 import java.sql.Timestamp;
 
-public class BoardVO {
+public class BoardVO extends BoardDefaultVO {
 
+	private static final long serialVersionUID = 1L;
+	
 	private int b_seq;
 	private String b_title;
 	private String b_comment;
@@ -13,7 +15,7 @@ public class BoardVO {
 	private String b_modifier;
 	private Timestamp b_modifydate;
 	
-	private String c_name;
+	private String u_id;
 	
 	public int getB_seq() {
 		return b_seq;
@@ -64,11 +66,11 @@ public class BoardVO {
 		this.b_modifydate = b_modifydate;
 	}
 	
-	public String getC_name() {
-		return c_name;
-	}
-	public void setC_name(String c_name) {
-		this.c_name = c_name;
-	}
 	
+	public String getU_id() {
+		return u_id;
+	}
+	public void setU_id(String u_id) {
+		this.u_id = u_id;
+	}
 }

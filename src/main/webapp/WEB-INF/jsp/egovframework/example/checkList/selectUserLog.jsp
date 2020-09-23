@@ -16,6 +16,22 @@
 		var isReadCol = $(".isRead");
 		var readDateCol = $(".readDate");
 		
+		$.each(isReadCol, function(index, item) {
+			console.log($(item).text());
+			
+			if($(item).text().trim() == "") {
+				$(item).html('<span style="color: red">조회하지 않음</span>')
+			}
+		});
+		
+		$.each(readDateCol, function(index, item) {
+			console.log($(item).text());
+			
+			if($(item).text().trim() == "") {
+				$(item).html('<span style="color: gray">조회기록 없음</span>')
+			}
+		});
+		
 	});
 </script>
 
@@ -48,14 +64,14 @@
 				<c:forEach items="${svoList }" var="show">
 				<tr>
 					<th class="text-center" scope="row">${show.u_id }</th>
-					<td class="text-center" class="isRead">
+					<td class="text-center isRead">
 						<c:forEach items="${lvoList }" var="log">
 							<c:if test="${show.u_id == log.u_id}">
 								<span style="color: blue">조회함</span>
 							</c:if>
 						</c:forEach>
 					</td>
-					<td class="text-center" class="readDate">
+					<td class="text-center readDate">
 						<c:forEach items="${lvoList }" var="log">
 							<c:if test="${show.u_id == log.u_id}">
 								<fmt:formatDate pattern="yyyy-MM-dd" value="${log.l_readdate }"/>
@@ -70,7 +86,7 @@
 		<!-- Paging -->
 		
 		<div class="text-right">
-			<button type="button" class="btn btn-dark" onclick="">관리자 메인</button>
+			<button type="button" class="btn btn-dark" onclick="history.back();">이전 페이지</button>
 		</div>
 	</div>
 </body>

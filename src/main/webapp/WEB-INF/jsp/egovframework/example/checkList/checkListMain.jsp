@@ -117,6 +117,10 @@
 		        }
 		 });		        
 	}
+	
+	function fn_link_page(pageNo){
+		location.href="checkListMain.do?pageIndex=" + pageNo;
+	}
 
 </script>
 </head>
@@ -225,7 +229,9 @@
 		</table>
 		
 		<!-- Paging -->
-		
+		<ul class="pagination" style="width: 100%; text-align:center;">
+   			<ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_link_page" />
+       	</ul>
 	</div>
 	
 </body>

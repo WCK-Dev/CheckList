@@ -10,17 +10,29 @@ public interface CheckListService {
 	
 	int insertBoard(BoardVO vo);
 	
+	int updateBoard(BoardVO vo);
+	
+	int deleteBoard(BoardVO vo);
+	
 	int insertCheckList(CheckListVO vo);
+	
+	int deleteCheckList(CheckListVO vo);
 	
 	int insertShowList(ShowListVO vo);
 	
-	List<BoardVO> selectBoardListAll();
+	int deleteShowList(ShowListVO vo);
+	
+	List<BoardVO> selectBoardListAll(BoardVO vo);
+	
+	int selectBoardListAllTotCnt(BoardVO vo);
 	
 	List<BoardVO> selectBoardTopListAll();
 	
-	List<BoardVO> selectBoardList(UserVO vo);
+	List<BoardVO> selectBoardList(BoardVO vo);
 	
-	List<BoardVO> selectBoardTopList(UserVO vo);
+	int selectBoardListTotCnt(BoardVO vo);
+	
+	List<BoardVO> selectBoardTopList(BoardVO vo);
 	
 	BoardVO selectBoard(BoardVO vo);
 	
@@ -43,5 +55,7 @@ public interface CheckListService {
 	int updateAnswer(AnswerVO vo);
 	
 	List<LogVO> selectLogList(BoardVO vo);
+	
+	List<AnswerVO> selectUserAnswerList(BoardVO vo);
 	
 }

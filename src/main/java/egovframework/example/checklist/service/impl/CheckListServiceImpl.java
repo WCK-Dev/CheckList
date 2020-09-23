@@ -59,20 +59,45 @@ public class CheckListServiceImpl extends EgovAbstractServiceImpl implements Che
 	public int insertBoard(BoardVO vo) {
 		return checkListDAO.insertBoard(vo);
 	}
+	
+	@Override
+	public int updateBoard(BoardVO vo) {
+		return checkListDAO.updateBoard(vo);
+	}
+	
+	@Override
+	public int deleteBoard(BoardVO vo) {
+		return checkListDAO.deleteBoard(vo);
+	}
 
 	@Override
 	public int insertCheckList(CheckListVO vo) {
 		return checkListDAO.insertCheckList(vo);
+	}
+	
+	@Override
+	public int deleteCheckList(CheckListVO vo) {
+		return checkListDAO.deleteCheckList(vo);
 	}
 
 	@Override
 	public int insertShowList(ShowListVO vo) {
 		return checkListDAO.insertShowList(vo);
 	}
+	
+	@Override
+	public int deleteShowList(ShowListVO vo) {
+		return checkListDAO.deleteShowList(vo);
+	}
 
 	@Override
-	public List<BoardVO> selectBoardListAll() {
-		return checkListDAO.selectBoardListAll();
+	public List<BoardVO> selectBoardListAll(BoardVO vo) {
+		return checkListDAO.selectBoardListAll(vo);
+	}
+	
+	@Override
+	public int selectBoardListAllTotCnt(BoardVO vo) {
+		return checkListDAO.selectBoardListAllTotCnt(vo);
 	}
 
 	@Override
@@ -81,12 +106,17 @@ public class CheckListServiceImpl extends EgovAbstractServiceImpl implements Che
 	}
 	
 	@Override
-	public List<BoardVO> selectBoardList(UserVO vo) {
+	public List<BoardVO> selectBoardList(BoardVO vo) {
 		return checkListDAO.selectBoardList(vo);
+	}
+	
+	@Override
+	public int selectBoardListTotCnt(BoardVO vo) {
+		return checkListDAO.selectBoardListTotCnt(vo);
 	}
 
 	@Override
-	public List<BoardVO> selectBoardTopList(UserVO vo) {
+	public List<BoardVO> selectBoardTopList(BoardVO vo) {
 		return checkListDAO.selectBoardTopList(vo);
 	}
 
@@ -143,5 +173,10 @@ public class CheckListServiceImpl extends EgovAbstractServiceImpl implements Che
 	@Override
 	public List<LogVO> selectLogList(BoardVO vo) {
 		return checkListDAO.selectLogList(vo);
+	}
+	
+	@Override
+	public List<AnswerVO> selectUserAnswerList(BoardVO vo) {
+		return checkListDAO.selectUserAnswerList(vo);
 	}
 }

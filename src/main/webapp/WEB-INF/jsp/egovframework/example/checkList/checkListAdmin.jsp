@@ -13,7 +13,7 @@
 
 <script>
 	$(document).ready(function() {
-		if('${logErrorMsg}' == 'true'){
+		if('${bSeqErrorMsg}' == 'true'){
 			alert("글번호가 존재하지 않습니다.");
 		}
 	});
@@ -91,6 +91,41 @@
 		
 		location.href="selectUserLog.do?b_seq=" + b_seq;
 	}
+	
+	function selectUserAnswer() {
+		var b_seq = $("input[name='b_seq']").val();
+		
+		location.href="selectUserAnswer.do?b_seq=" + b_seq;
+	}
+	
+	function modifyBoard() {
+		var b_seq = $('input[name="b_seq"]').val();
+		
+		location.href="modifyBoard.do?b_seq=" + b_seq;
+	}
+	
+	function deleteBoard() {
+		var b_seq = $('input[name="b_seq"]').val();
+		
+		if(confirm("체크리스트를 삭제하면 해당 글의 유저 답변도 모두 삭제됩니다.\r\n정말 게시글을 삭제하시겠습니까?")) {
+			$.ajax({
+				
+				type : 'POST',
+				url : "deleteBoard.do",
+				dataType : "text",
+				data : {"b_seq": b_seq},
+				success : function (result) {
+					alert("해당 체크리스트 게시글이 삭제되었습니다.");
+					location.reload(true);
+				}
+				
+			});
+		};
+	}
+	
+	function fn_link_page(pageNo){
+		location.href="checkListAdmin.do?pageIndex=" + pageNo;
+	}
 </script>
 
 </head>
@@ -142,9 +177,10 @@
 						
 					</div>	
 					<div class="modal-footer">
-						<button type="button" class="btn btn-danger" onclick="">수정</button>
-						<button type="button" class="btn btn-primary" onclick="selectUserLog();">유저 조회이력확인</button>
-						<button type="button" class="btn btn-info" onclick="">유저 체크확인</button>
+						<button type="button" class="btn btn-primary" onclick="selectUserLog();">유저조회이력</button>
+						<button type="button" class="btn btn-info" onclick="selectUserAnswer()">유저체크확인</button>
+						<button type="button" class="btn btn-warning" onclick="modifyBoard()">수정</button>
+						<button type="button" class="btn btn-danger" onclick="deleteBoard()">삭제</button>
 					</div>
 				</div>
 			</div>
@@ -208,6 +244,10 @@
 		</table>
 		
 		<!-- Paging -->
+		<ul class="pagination" style="width: 100%; text-align:center;">
+   			<ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_link_page" />
+       	</ul>
+       	<form >
 		
 		<div class="text-right">
 			<button type="button" class="btn btn-dark" onclick="location.href='writeBoard.do'">새 체크리스트 작성</button>

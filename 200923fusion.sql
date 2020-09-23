@@ -42,7 +42,7 @@ CREATE TABLE `answer` (
 
 LOCK TABLES `answer` WRITE;
 /*!40000 ALTER TABLE `answer` DISABLE KEYS */;
-INSERT INTO `answer` VALUES ('N','2020-09-22 07:58:15',NULL,NULL,'user1',16),('Y','2020-09-22 07:58:15',NULL,NULL,'user1',17),('N','2020-09-22 07:58:15',NULL,NULL,'user1',18),('Y','2020-09-22 06:54:12','wck','2020-09-22 07:52:01','wck',11),('Y','2020-09-22 06:54:12','wck','2020-09-22 07:52:01','wck',12),('Y','2020-09-22 06:54:12','wck','2020-09-22 07:52:01','wck',13),('Y','2020-09-22 07:10:56','wck','2020-09-22 07:52:03','wck',14),('Y','2020-09-22 07:10:56','wck','2020-09-22 07:52:03','wck',15);
+INSERT INTO `answer` VALUES ('N','2020-09-23 05:38:26',NULL,NULL,'wck',19),('N','2020-09-23 05:38:26',NULL,NULL,'wck',20),('N','2020-09-23 05:38:26',NULL,NULL,'wck',21),('Y','2020-09-23 05:38:26',NULL,NULL,'wck',22),('N','2020-09-23 05:38:26',NULL,NULL,'wck',23),('N','2020-09-23 05:38:26',NULL,NULL,'wck',24),('N','2020-09-23 05:38:26',NULL,NULL,'wck',25),('N','2020-09-23 05:38:26',NULL,NULL,'wck',26);
 /*!40000 ALTER TABLE `answer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,7 +65,7 @@ CREATE TABLE `board` (
   PRIMARY KEY (`b_seq`),
   KEY `FK_b_writer` (`b_writer`),
   CONSTRAINT `FK_b_writer` FOREIGN KEY (`b_writer`) REFERENCES `user` (`u_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='각 체크리스트 글 테이블';
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='각 체크리스트 글 테이블';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +74,7 @@ CREATE TABLE `board` (
 
 LOCK TABLES `board` WRITE;
 /*!40000 ALTER TABLE `board` DISABLE KEYS */;
-INSERT INTO `board` VALUES (14,'새 체크리스트 작성','해당 유저들은 오늘안에 체크리스트 작성 부탁합니다.','2020-09-21 08:53:06','admin','Y','ACV','2020-09-22 11:18:59'),(17,'상단 비노출 체크리스트','체크항목에 모두 답변해주세요','2020-09-21 13:56:32','admin','N',NULL,NULL),(18,'사용자 체크리스트','사용자분들은 해당 체크리스트를 작성하여 주십시오.','2020-09-22 07:57:26','admin','Y',NULL,NULL);
+INSERT INTO `board` VALUES (19,'##사업부 위생관리 체크리스트( 2020_09_23 )','특이사항 : \r\n\r\n1. 청소담당자는 매일 청소후 check리스트를 작성한다\r\n\r\n2. 점검자는 양호한 상태에만 체크박스에 체크를 기입한다.','2020-09-23 03:25:58','admin','Y',NULL,NULL),(31,'1','1','2020-09-23 09:20:54','admin','N','admin','2020-09-23 09:23:13'),(32,'3','3','2020-09-23 09:21:01','admin','N','admin','2020-09-23 09:23:17'),(33,'3','5','2020-09-23 09:21:08','admin','N','admin','2020-09-23 09:23:22'),(34,'6','6','2020-09-23 09:21:22','admin','N',NULL,NULL),(35,'7','7','2020-09-23 09:21:32','admin','N',NULL,NULL),(36,'8','8','2020-09-23 09:21:44','admin','N',NULL,NULL),(37,'9','9','2020-09-23 09:21:55','admin','N',NULL,NULL),(38,'10','10','2020-09-23 09:22:07','admin','N',NULL,NULL),(39,'11','11','2020-09-23 09:22:20','admin','N',NULL,NULL),(40,'12','12','2020-09-23 09:22:28','admin','Y','admin','2020-09-23 09:23:07');
 /*!40000 ALTER TABLE `board` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,7 +92,7 @@ CREATE TABLE `checklist` (
   PRIMARY KEY (`c_seq`),
   KEY `FK_b_seq` (`b_seq`),
   CONSTRAINT `FK_b_seq` FOREIGN KEY (`b_seq`) REFERENCES `board` (`b_seq`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='각 작성글별 체크리스트 테이블';
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='각 작성글별 체크리스트 테이블';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,7 +101,7 @@ CREATE TABLE `checklist` (
 
 LOCK TABLES `checklist` WRITE;
 /*!40000 ALTER TABLE `checklist` DISABLE KEYS */;
-INSERT INTO `checklist` VALUES (11,'쳌1',14),(12,'쳌2',14),(13,'쳌3',14),(14,'체크항목 3',17),(15,'체크항목 4',17),(16,'비밀번호 점검',18),(17,'계정명 확인',18),(18,'계정 공유 금지',18);
+INSERT INTO `checklist` VALUES (19,'좌변기 / 소변기 청결상태 체크',19),(20,'휴지걸이의 휴지 충분여부',19),(21,'세면대의 청결상태 여부',19),(22,'세면대에 세정제 비치 여부',19),(23,'바닥 청결상태 양호도',19),(24,'환풍기의 정상작동',19),(25,'용기의 파손부위 여부',19),(26,'변기 / 하수구 등의 막힘 여부',19),(67,'1',31),(68,'3',32),(69,'3',33),(70,'6',34),(71,'7',35),(72,'8',36),(73,'9',37),(74,'10',38),(75,'11',39),(76,'12',40);
 /*!40000 ALTER TABLE `checklist` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,12 +117,8 @@ CREATE TABLE `log` (
   `l_readdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `u_id` varchar(100) NOT NULL,
   `b_seq` int NOT NULL,
-  PRIMARY KEY (`l_seq`),
-  KEY `FK_u_id` (`u_id`),
-  KEY `FK_log_bseq` (`b_seq`),
-  CONSTRAINT `FK_log_bseq` FOREIGN KEY (`b_seq`) REFERENCES `board` (`b_seq`),
-  CONSTRAINT `FK_u_id` FOREIGN KEY (`u_id`) REFERENCES `user` (`u_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='사용자별 조회 / 답변 로그 테이블';
+  PRIMARY KEY (`l_seq`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='사용자별 조회 / 답변 로그 테이블';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +127,7 @@ CREATE TABLE `log` (
 
 LOCK TABLES `log` WRITE;
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
-INSERT INTO `log` VALUES (1,'2020-09-22 08:25:38','wck',14),(2,'2020-09-22 08:25:32','wck',17),(3,'2020-09-22 09:28:55','user2',14);
+INSERT INTO `log` VALUES (1,'2020-09-23 06:06:08','wck',14),(2,'2020-09-23 03:02:03','wck',17),(3,'2020-09-23 03:02:36','user2',14),(4,'2020-09-23 01:07:23','user3',14),(5,'2020-09-23 01:07:20','user3',18),(6,'2020-09-23 01:09:09','user1',18),(7,'2020-09-23 09:12:04','wck',19);
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,7 +154,7 @@ CREATE TABLE `showlist` (
 
 LOCK TABLES `showlist` WRITE;
 /*!40000 ALTER TABLE `showlist` DISABLE KEYS */;
-INSERT INTO `showlist` VALUES ('user2',14),('user3',14),('user5',14),('wck',14),('user3',17),('user4',17),('wck',17),('user1',18),('user3',18);
+INSERT INTO `showlist` VALUES ('user3',19),('user5',19),('wck',19),('wck',31),('wck',32),('wck',33),('wck',34),('wck',35),('wck',36),('wck',37),('wck',38),('wck',39),('wck',40);
 /*!40000 ALTER TABLE `showlist` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,4 +193,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-22 18:33:45
+-- Dump completed on 2020-09-23 18:31:28
