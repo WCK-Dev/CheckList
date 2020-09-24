@@ -72,6 +72,10 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/checkListAdmin.do" />
 			<mvc:mapping path="/writeBoard.do" />
+			<mvc:mapping path="/modifyBoard.do" />
+			<mvc:mapping path="/deleteBoard.do" />
+			<mvc:mapping path="/selectUserLog.do" />
+			<mvc:mapping path="/selectUserAnswer.do" />
 			<ref bean="adminAuthInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors> 

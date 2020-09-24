@@ -95,9 +95,7 @@
 					    
 					    <!-- Comment -->
 					    <div class="text-left">
-							<p id="b_comment">
-								${boardInfo.b_comment }
-							</p>
+					    	<pre id="b_comment" style="white-space: pre-wrap;">${boardInfo.b_comment }</pre>
 					    </div>
 						
 					</div>	

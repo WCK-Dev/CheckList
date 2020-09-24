@@ -158,8 +158,7 @@
 					    
 					    <!-- Comment -->
 					    <div class="text-left">
-							<p id="b_comment">
-							</p>
+							<pre id="b_comment" style="white-space: pre-wrap;"></pre>
 					    </div>
 						
 					</div>	
@@ -180,7 +179,7 @@
 		
 		<hr>
 		
-		<h3>상단노출 체크리스트</h3>
+		<h3>상단고정 체크리스트</h3>
 		<!-- table -->
 		<table class="table">
 			<thead class="blue white-text">
@@ -205,7 +204,7 @@
 
 		<hr>
 		
-		<h3>내 체크리스트</h3>
+		<h3>일반 체크리스트</h3>
 		<!-- table -->
 		<table class="table">
 			<thead class="black white-text">

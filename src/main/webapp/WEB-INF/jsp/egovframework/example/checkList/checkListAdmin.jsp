@@ -162,9 +162,7 @@
 					    
 					    <!-- Comment -->
 					    <div class="text-left">
-							<p id="b_comment">
-								<%-- <c:out value="${fn:replace(gallery.g_content, crcn, br)}" escapeXml="false"/> --%>
-							</p>
+							<pre id="b_comment" style="white-space: pre-wrap;"></pre>
 					    </div>
 					    
 					    <hr>
@@ -195,7 +193,7 @@
 		
 		<hr>
 		
-		<h3>상단노출 체크리스트</h3>
+		<h3>상단고정 체크리스트</h3>
 		<!-- table -->
 		<table class="table">
 			<thead class="blue white-text">
@@ -220,7 +218,7 @@
 
 		<hr>
 		
-		<h3>전체 체크리스트</h3>
+		<h3>일반 체크리스트</h3>
 		<!-- table -->
 		<table class="table">
 			<thead class="black white-text">

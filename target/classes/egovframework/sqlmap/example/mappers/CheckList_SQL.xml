@@ -84,37 +84,43 @@
 	<select id="selectBoardListAll" resultType="boardVO">
 		SELECT *
 		FROM board
+		WHERE b_topYN != 'Y'
+		ORDER BY b_seq DESC
 		LIMIT #{firstIndex}, #{recordCountPerPage}
 	</select>
 	
 	<select id="selectBoardListAllTotCnt" resultType="int">
 		SELECT COUNT(*)
 		FROM board
+		WHERE b_topYN != 'Y'
 	</select>
 	
 	<select id="selectBoardTopListAll" resultType="boardVO">
 		SELECT *
 		FROM board
 		WHERE b_topYN = 'Y'
+		ORDER BY b_seq DESC
 	</select>
 	
 	<select id="selectBoardList" resultType="boardVO">
 		SELECT b.b_seq, b_title, b_comment, b_regdate, b_writer, b_topYN, b_modifier, b_modifydate
 		FROM board b, showlist s 
-		WHERE b.b_seq = s.b_seq AND s.u_id = #{u_id}
+		WHERE b.b_seq = s.b_seq AND s.u_id = #{u_id} AND b.b_topYN != 'Y'
+		ORDER BY b_seq DESC
 		LIMIT #{firstIndex}, #{recordCountPerPage}
 	</select>
 	
 	<select id="selectBoardListTotCnt" resultType="int">
 		SELECT COUNT(*)
-		FROM board b, showlist s 
-		WHERE b.b_seq = s.b_seq AND s.u_id = #{u_id}
+		FROM board b, showlist s
+		WHERE b.b_seq = s.b_seq AND s.u_id = #{u_id} AND b.b_topYN != 'Y'
 	</select>
 	
 	<select id="selectBoardTopList" resultType="boardVO">
 		SELECT b.b_seq, b_title, b_comment, b_regdate, b_writer, b_topYN, b_modifier, b_modifydate
-		FROM board b, showlist s 
+		FROM board b, showlist s
 		WHERE b.b_seq = s.b_seq AND s.u_id = #{u_id} AND b_topYN = 'Y'
+		ORDER BY b.b_seq DESC
 	</select>
 	
 	<select id="selectBoard" resultType="boardVO">

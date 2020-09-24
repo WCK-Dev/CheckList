@@ -35,13 +35,14 @@ public class CheckListController {
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
 
-	
+	//로그인 화면이동
 	@RequestMapping(value="login.do", method=RequestMethod.GET)
 	public String login() {
 		
 		return "checkList/login";
 	}
 	
+	//로그인 수행
 	@RequestMapping(value="login.do", method=RequestMethod.POST)
 	public String login(UserVO uvo, HttpServletRequest request, RedirectAttributes ra) {
 		
@@ -61,6 +62,7 @@ public class CheckListController {
 		}
 	}
 	
+	//로그아웃
 	@RequestMapping(value="logout.do")
 	public String logout(HttpServletRequest request) {
 		request.getSession().removeAttribute("user");
@@ -68,7 +70,7 @@ public class CheckListController {
 		return "redirect:/login.do";
 	}
 	
-	
+	//유저 로그인시 체크리스트 메인페이지
 	@RequestMapping(value="checkListMain.do")
 	public String checkListMain(HttpSession session, ModelMap model, BoardVO bvo) {
 		
@@ -98,6 +100,7 @@ public class CheckListController {
 		return "checkList/checkListMain";
 	}
 	
+	//관리자 로그인시 체크리스트 관리페이지
 	@RequestMapping(value="checkListAdmin.do")
 	public String checkListAdmin(ModelMap model, BoardVO bvo) {
 		/** pageing setting */
@@ -120,13 +123,15 @@ public class CheckListController {
 		return "checkList/checkListAdmin";
 	}
 	
+	//관리자의 체크리스트 작성 페이지 이동
 	@RequestMapping(value="writeBoard.do", method=RequestMethod.GET)
 	public String writeBoard(ModelMap model) {
 		
 		model.addAttribute("userList", checkListService.selectUserList());
 		return "checkList/writeBoard";
 	}
-	
+
+	//관리자 체크리스트 글 작성
 	@RequestMapping(value="writeBoard.do", method=RequestMethod.POST)
 	public String writeBoard(BoardVO bvo, String c_nameList, HttpServletRequest request) {
 		
@@ -159,6 +164,7 @@ public class CheckListController {
 		return "redirect:/checkListAdmin.do";
 	}
 	
+	//관리자 체크리스트 글 수정 페이지 이동
 	@RequestMapping(value="modifyBoard.do", method=RequestMethod.GET)
 	public String modifyBoard(BoardVO bvo, ModelMap model) {
 		
@@ -170,6 +176,7 @@ public class CheckListController {
 		return "checkList/modifyBoard"; 
 	}
 	
+	//관리자 체크리스트 글 수정
 	@RequestMapping(value="modifyBoard.do", method=RequestMethod.POST)
 	public String modifyBoard(BoardVO bvo, String delCheckList, String newCheckList, HttpServletRequest request) {
 		
@@ -217,12 +224,14 @@ public class CheckListController {
 		return "redirect:/checkListAdmin.do"; 
 	}
 	
+	//관리자 게시글 삭제
 	@RequestMapping(value="deleteBoard.do", method=RequestMethod.POST)
 	@ResponseBody
 	public String deleteBoard(BoardVO bvo) {
 		return checkListService.deleteBoard(bvo) + "";
 	}
 	
+	//관리자 글 조회
 	@RequestMapping(value="readBoard.do", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String, Object> readBoard(BoardVO bvo) {
@@ -235,6 +244,7 @@ public class CheckListController {
 		return boardMap;
 	}
 	
+	//사용자가 체크리스트 조회
 	@RequestMapping(value="readCheckList.do", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String, Object> readCheckList(BoardVO bvo, HttpSession session) {
@@ -263,6 +273,7 @@ public class CheckListController {
 		return boardMap;
 	}
 	
+	//사용자 체크리스트 저장
 	@RequestMapping(value="saveAnswer.do", method=RequestMethod.POST)
 	@ResponseBody
 	public String saveAnswer(@RequestBody AnswerVO[] send_Json, HttpSession session) {
@@ -293,6 +304,7 @@ public class CheckListController {
 		return result + "";
 	}
 	
+	//관리자가 사용자의 체크리스트 게시글 조회여부 확인
 	@RequestMapping(value="selectUserLog.do")
 	public String selectUserLog(BoardVO bvo, ModelMap model, RedirectAttributes ra) {
 		
@@ -310,6 +322,7 @@ public class CheckListController {
 		}
 	}
 	
+	//관리자가 사용자의 체크리스트 저장 목록을 조회
 	@RequestMapping(value="selectUserAnswer.do")
 	public String selectAnswerList(BoardVO bvo, ModelMap model, RedirectAttributes ra) {
 		
@@ -326,6 +339,7 @@ public class CheckListController {
 		}
 	}
 	
+	//관리자가 사용자의 체크리스트 저장 목록을 확인후, 상세내용 조회
 	@RequestMapping(value="readUserAnswer.do", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String, Object> readUserAnswer(BoardVO bvo) {
