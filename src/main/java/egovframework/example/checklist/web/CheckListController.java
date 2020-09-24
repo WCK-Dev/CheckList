@@ -164,9 +164,28 @@ public class CheckListController {
 		return "redirect:/checkListAdmin.do";
 	}
 	
+	//관리자 글 조회
+	@RequestMapping(value="readBoard.do", method=RequestMethod.POST)
+	@ResponseBody
+	public HashMap<String, Object> readBoard(BoardVO bvo) {
+		
+		HashMap<String, Object> boardMap = new HashMap<>();
+		boardMap.put("bvo", checkListService.selectBoard(bvo));
+		boardMap.put("cvoList", checkListService.selectCheckList(bvo));
+		boardMap.put("svoList", checkListService.selectShowList(bvo));
+		
+		return boardMap;
+	}
+
 	//관리자 체크리스트 글 수정 페이지 이동
 	@RequestMapping(value="modifyBoard.do", method=RequestMethod.GET)
-	public String modifyBoard(BoardVO bvo, ModelMap model) {
+	public String modifyBoard(BoardVO bvo, ModelMap model, RedirectAttributes ra) {
+		
+		BoardVO board = checkListService.selectBoard(bvo);
+		if(board == null) {
+			ra.addFlashAttribute("bSeqErrorMsg", "true");
+			return "redirect:/checkListAdmin.do";
+		}
 		
 		model.addAttribute("board", checkListService.selectBoard(bvo));
 		model.addAttribute("checkList", checkListService.selectCheckList(bvo));
@@ -231,19 +250,52 @@ public class CheckListController {
 		return checkListService.deleteBoard(bvo) + "";
 	}
 	
-	//관리자 글 조회
-	@RequestMapping(value="readBoard.do", method=RequestMethod.POST)
-	@ResponseBody
-	public HashMap<String, Object> readBoard(BoardVO bvo) {
+	//관리자가 사용자의 체크리스트 게시글 조회여부 확인
+	@RequestMapping(value="selectUserLog.do")
+	public String selectUserLog(BoardVO bvo, ModelMap model, RedirectAttributes ra) {
 		
-		HashMap<String, Object> boardMap = new HashMap<>();
-		boardMap.put("bvo", checkListService.selectBoard(bvo));
-		boardMap.put("cvoList", checkListService.selectCheckList(bvo));
-		boardMap.put("svoList", checkListService.selectShowList(bvo));
+		bvo = checkListService.selectBoard(bvo);
 		
-		return boardMap;
+		if(bvo == null) { 
+			ra.addFlashAttribute("bSeqErrorMsg", "true");
+			return "redirect:/checkListAdmin.do";
+			
+		} else {
+			model.addAttribute("boardInfo", bvo);
+			model.addAttribute("svoList", checkListService.selectShowList(bvo));
+			model.addAttribute("lvoList", checkListService.selectLogList(bvo));
+			return "checkList/selectUserLog";
+		}
 	}
 	
+	//관리자가 사용자의 체크리스트 저장 목록을 조회
+	@RequestMapping(value="selectUserAnswer.do")
+	public String selectAnswerList(BoardVO bvo, ModelMap model, RedirectAttributes ra) {
+		
+		bvo = checkListService.selectBoard(bvo);
+		
+		if(bvo == null) { 
+			ra.addFlashAttribute("bSeqErrorMsg", "true");
+			return "redirect:/checkListAdmin.do";
+			
+		} else {
+			model.addAttribute("boardInfo", checkListService.selectBoard(bvo));
+			model.addAttribute("userAnswerList", checkListService.selectUserAnswerList(bvo));
+			return "checkList/selectUserAnswer";
+		}
+	}
+	
+	//관리자가 사용자의 체크리스트 저장 목록을 확인후, 상세내용 조회
+	@RequestMapping(value="readUserAnswer.do", method=RequestMethod.POST)
+	@ResponseBody
+	public HashMap<String, Object> readUserAnswer(BoardVO bvo) {
+		HashMap<String, Object> answerMap = new HashMap<>();
+		answerMap.put("cvoList", checkListService.selectCheckList(bvo));
+		answerMap.put("avoList", checkListService.selectAnswerList(bvo));
+		
+		return answerMap; 
+	}
+		
 	//사용자가 체크리스트 조회
 	@RequestMapping(value="readCheckList.do", method=RequestMethod.POST)
 	@ResponseBody
@@ -302,52 +354,6 @@ public class CheckListController {
 		}
 		
 		return result + "";
-	}
-	
-	//관리자가 사용자의 체크리스트 게시글 조회여부 확인
-	@RequestMapping(value="selectUserLog.do")
-	public String selectUserLog(BoardVO bvo, ModelMap model, RedirectAttributes ra) {
-		
-		bvo = checkListService.selectBoard(bvo);
-		
-		if(bvo == null) { 
-			ra.addFlashAttribute("bSeqErrorMsg", "true");
-			return "redirect:/checkListAdmin.do";
-			
-		} else {
-			model.addAttribute("boardInfo", bvo);
-			model.addAttribute("svoList", checkListService.selectShowList(bvo));
-			model.addAttribute("lvoList", checkListService.selectLogList(bvo));
-			return "checkList/selectUserLog";
-		}
-	}
-	
-	//관리자가 사용자의 체크리스트 저장 목록을 조회
-	@RequestMapping(value="selectUserAnswer.do")
-	public String selectAnswerList(BoardVO bvo, ModelMap model, RedirectAttributes ra) {
-		
-		bvo = checkListService.selectBoard(bvo);
-		
-		if(bvo == null) { 
-			ra.addFlashAttribute("bSeqErrorMsg", "true");
-			return "redirect:/checkListAdmin.do";
-			
-		} else {
-			model.addAttribute("boardInfo", checkListService.selectBoard(bvo));
-			model.addAttribute("userAnswerList", checkListService.selectUserAnswerList(bvo));
-			return "checkList/selectUserAnswer";
-		}
-	}
-	
-	//관리자가 사용자의 체크리스트 저장 목록을 확인후, 상세내용 조회
-	@RequestMapping(value="readUserAnswer.do", method=RequestMethod.POST)
-	@ResponseBody
-	public HashMap<String, Object> readUserAnswer(BoardVO bvo) {
-		HashMap<String, Object> answerMap = new HashMap<>();
-		answerMap.put("cvoList", checkListService.selectCheckList(bvo));
-		answerMap.put("avoList", checkListService.selectAnswerList(bvo));
-		
-		return answerMap; 
 	}
 	
 }
