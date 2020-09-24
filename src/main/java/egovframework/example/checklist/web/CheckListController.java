@@ -264,24 +264,8 @@ public class CheckListController {
 			model.addAttribute("boardInfo", bvo);
 			model.addAttribute("svoList", checkListService.selectShowList(bvo));
 			model.addAttribute("lvoList", checkListService.selectLogList(bvo));
-			return "checkList/selectUserLog";
-		}
-	}
-	
-	//관리자가 사용자의 체크리스트 저장 목록을 조회
-	@RequestMapping(value="selectUserAnswer.do")
-	public String selectAnswerList(BoardVO bvo, ModelMap model, RedirectAttributes ra) {
-		
-		bvo = checkListService.selectBoard(bvo);
-		
-		if(bvo == null) { 
-			ra.addFlashAttribute("bSeqErrorMsg", "true");
-			return "redirect:/checkListAdmin.do";
-			
-		} else {
-			model.addAttribute("boardInfo", checkListService.selectBoard(bvo));
 			model.addAttribute("userAnswerList", checkListService.selectUserAnswerList(bvo));
-			return "checkList/selectUserAnswer";
+			return "checkList/selectUserLog";
 		}
 	}
 	

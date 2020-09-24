@@ -27,6 +27,10 @@
 			alert("공백문자는 체크값으로 입력될 수 없습니다.");
 			return false;
 			
+		} else if (newCheckBox.includes(',')){
+			alert("체크박스명에 ,는 포함될 수 없습니다.");
+			return false;
+			
 		} else {
 			
 			for(i=0; i<splitCheck.length; i++) {

@@ -176,9 +176,8 @@
 					</div>	
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" onclick="selectUserLog();">유저조회이력</button>
-						<button type="button" class="btn btn-info" onclick="selectUserAnswer()">유저체크확인</button>
-						<button type="button" class="btn btn-warning" onclick="modifyBoard()">수정</button>
-						<button type="button" class="btn btn-danger" onclick="deleteBoard()">삭제</button>
+						<button type="button" class="btn btn-warning" onclick="modifyBoard();">수정</button>
+						<button type="button" class="btn btn-danger" onclick="deleteBoard();">삭제</button>
 					</div>
 				</div>
 			</div>
