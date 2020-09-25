@@ -17,7 +17,6 @@ if('${loginErrMsg}' == 'true'){
 	alert("로그인이 실패하였습니다.\r\n아이디와 비밀번호를 확인해주세요.");
 }
 </script>
-
 </head>
 <body>
 <div class="container wrapper">
