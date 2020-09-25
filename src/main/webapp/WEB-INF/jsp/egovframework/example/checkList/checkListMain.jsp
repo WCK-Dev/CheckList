@@ -64,11 +64,11 @@
 			<button class="btn btn-danger" type="button" onclick="location.href='logout.do'">로그아웃</button>
 		</div>
 		
-		<h2 style="margin-top: 60px; display: inline-block;">체크리스트 사용자 페이지</h2>
+		<h2 style="margin-top: 60px; display: inline-block;">${user.u_id }님의 체크리스트</h2>
 		
 		<hr>
 		
-		<h3>상단고정 체크리스트</h3>
+		<h4 class="mt-4">상단고정 체크리스트</h4>
 		<!-- table -->
 		<table class="table">
 			<thead class="blue white-text">
@@ -93,7 +93,7 @@
 
 		<hr>
 		
-		<h3>일반 체크리스트</h3>
+		<h4 class="mt-5">일반 체크리스트</h4>
 		<!-- table -->
 		<table class="table">
 			<thead class="black white-text">

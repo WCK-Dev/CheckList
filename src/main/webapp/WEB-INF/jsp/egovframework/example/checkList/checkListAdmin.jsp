@@ -66,7 +66,7 @@ $(document).ready(function() {
 						
 					</div>	
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" onclick="selectUserLog();">유저조회이력</button>
+						<button type="button" class="btn btn-primary" onclick="selectUserLog();">유저조회 & 답변이력</button>
 						<button type="button" class="btn btn-warning" onclick="modifyBoard();">수정</button>
 						<button type="button" class="btn btn-danger" onclick="deleteBoard();">삭제</button>
 					</div>
@@ -83,7 +83,7 @@ $(document).ready(function() {
 		
 		<hr>
 		
-		<h3>상단고정 체크리스트</h3>
+		<h4 class="mt-4">상단고정 체크리스트</h4>
 		<!-- table -->
 		<table class="table">
 			<thead class="blue white-text">
@@ -108,7 +108,7 @@ $(document).ready(function() {
 
 		<hr>
 		
-		<h3>일반 체크리스트</h3>
+		<h4 class="mt-5">일반 체크리스트</h4>
 		<!-- table -->
 		<table class="table">
 			<thead class="black white-text">
