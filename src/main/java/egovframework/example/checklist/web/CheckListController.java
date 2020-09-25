@@ -91,11 +91,8 @@ public class CheckListController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 		
-		////
-		
 		model.addAttribute("boardList", checkListService.selectBoardList(bvo));
 		model.addAttribute("boardTopList", checkListService.selectBoardTopList(bvo));
-		
 		
 		return "checkList/checkListMain";
 	}
